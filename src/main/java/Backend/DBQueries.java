@@ -1,5 +1,6 @@
 package Backend;
 
+import POJO.*;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import com.opencsv.CSVReader;
@@ -8,8 +9,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class DBQueries {
     private static final String GAME_ID = "GAME_ID";
@@ -50,6 +55,21 @@ public class DBQueries {
     private static final String WON = "WON";
     private static final String HEAD_COACH = "HEAD_COACH";
 
+    private static final SQLServerDataSource serverDataSource = getSqlServerDataSource();
+
+    private static Connection connection;
+    private static Statement statement;
+
+    static {
+        try {
+            connection = getSqlServerDataSource().getConnection();
+            statement = connection.createStatement();
+        } catch (SQLServerException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     private static String insertIntoGame = "INSERT  into game (game_id, season, type, away_team_id, home_team_id, away_goals, home_goals)\n" +
             "VALUES" +
@@ -78,6 +98,29 @@ public class DBQueries {
     private static String insertIntoGameTeamsStats = "INSERT INTO game_teams_stats(won, head_coach, goals, shots, hits, game_id, team_id) \n" +
             "VALUES" +
             "(" + WON + "," + HEAD_COACH + "," + GOALS + "," + SHOTS + "," + HITS + "," + GAME_ID + "," + TEAM_ID + ");";
+
+    private static String selectAllGames = "SELECT TOP(100) * " +
+            "FROM game;";
+
+    private static String selectAllGamePlays = "SELECT TOP(100) * " +
+            "FROM game_plays;";
+
+    private static String selectAllGamePlaysPlayers = "SELECT TOP(100) * " +
+            "FROM game_plays_players;";
+
+    private static String selectAllGameSkater = "SELECT TOP(100) * " +
+            "FROM game_skater_stats;";
+
+    private static String selectAllGameTeams = "SELECT TOP(100) * " +
+            "FROM game_teams_stats;";
+
+    private static String selectAllPlayers = "SELECT TOP(100) * " +
+            "FROM player_info;";
+
+    private static String selectAllTeams = "SELECT TOP(100) * " +
+            "FROM team_info;";
+
+
 
     public static void fillGames() {
         SQLServerDataSource serverDataSource = getSqlServerDataSource();
@@ -298,6 +341,141 @@ public class DBQueries {
             e.printStackTrace();
         }
     }
+
+    public static List<Game> getAllGames() {
+        try {
+            ResultSet rs = statement.executeQuery(selectAllGames);
+            ArrayList<Game> games = new ArrayList<>();
+            while (rs.next()) {
+                int gameId = rs.getInt("game_id");
+                String season = rs.getString("season").trim();
+                String type = rs.getString("type").trim();
+                int awayTeamId = rs.getInt("away_team_id");
+                int homeTeamId = rs.getInt("home_team_id");
+                int awayGoals = rs.getInt("away_goals");
+                int homeGoals = rs.getInt("home_goals");
+                games.add(new Game(gameId, season, type, awayTeamId, homeTeamId, awayGoals, homeGoals));
+            }
+            return games;
+        } catch (SQLServerException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    public static List<GamePlays> getAllGamePlays() {
+        try {
+            ResultSet rs = statement.executeQuery(selectAllGamePlays);
+            ArrayList<GamePlays> gamePlays = new ArrayList<>();
+            while (rs.next()) {
+                String play_id = rs.getString("play_id").trim();
+                int play_num = rs.getInt("play_num");
+                int team_id_for = rs.getInt("team_id_for");
+                int team_id_against = rs.getInt("team_id_against");
+                String event = rs.getString("event").trim();
+                int period = rs.getInt("period");
+                String description = rs.getString("description").trim();
+                int game_id = rs.getInt("game_id");
+                gamePlays.add(new GamePlays(play_id, play_num, team_id_for, team_id_against, event, period, description, game_id));
+            }
+            return gamePlays;
+        } catch (SQLServerException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    public static List<GamePlaysPlayer> getAllGamePlaysPlayers() {
+        try {
+            ResultSet rs = statement.executeQuery(selectAllGamePlaysPlayers);
+            ArrayList<GamePlaysPlayer> gamePlaysPlayers = new ArrayList<>();
+            while (rs.next()) {
+                String play_id = rs.getString("play_id").trim();
+                int game_id = rs.getInt("game_id");
+                int player_id = rs.getInt("player_id");
+                gamePlaysPlayers.add(new GamePlaysPlayer(play_id, game_id, player_id));
+            }
+            return gamePlaysPlayers;
+        } catch (SQLServerException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    public static List<GameSkater> getAllGameSkaters() {
+        try {
+            ResultSet rs = statement.executeQuery(selectAllGameSkater);
+            ArrayList<GameSkater> gameSkaters = new ArrayList<>();
+            while (rs.next()) {
+                int assists = rs.getInt("assists");
+                int goals = rs.getInt("goals");
+                int shots = rs.getInt("shots");
+                int hits = rs.getInt("hits");
+                int penaltyMinutes = rs.getInt("penaltyMinutes");
+                int game_id = rs.getInt("game_id");
+                int player_id = rs.getInt("player_id");
+                int team_id = rs.getInt("team_id");
+                gameSkaters.add(new GameSkater(assists, goals, shots, hits, penaltyMinutes, game_id, player_id, team_id));
+            }
+            return gameSkaters;
+        } catch (SQLServerException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    public static List<GameTeam> getAllGameTeams() {
+        try {
+            ResultSet rs = statement.executeQuery(selectAllGameTeams);
+            ArrayList<GameTeam> gameTeams = new ArrayList<>();
+            while (rs.next()) {
+                String won = rs.getString("won").trim();
+                String head_coach = rs.getString("head_coach").trim();
+                int goals = rs.getInt("goals");
+                int shots = rs.getInt("shots");
+                int hits = rs.getInt("hits");
+                int game_id = rs.getInt("game_id");
+                int team_id = rs.getInt("team_id");
+                gameTeams.add(new GameTeam(won, head_coach, goals, shots, hits, game_id, team_id));
+            }
+            return gameTeams;
+        } catch (SQLServerException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    public static List<TeamInfo> getAllTeamsInfo() {
+        try {
+            ResultSet rs = statement.executeQuery(selectAllTeams);
+            ArrayList<TeamInfo> gameTeams = new ArrayList<>();
+            while (rs.next()) {
+                int team_id = rs.getInt("team_id");
+                int franchiseId = rs.getInt("franchiseId");
+                String shortName = rs.getString("shortName");
+                String teamName = rs.getString("teamName").trim();
+                String abbreviation = rs.getString("abbreviation").trim();
+                gameTeams.add(new TeamInfo(team_id, franchiseId, shortName, teamName, abbreviation));
+            }
+            return gameTeams;
+        } catch (SQLServerException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.EMPTY_LIST;
+    }
+
 
     private static SQLServerDataSource getSqlServerDataSource() {
         SQLServerDataSource serverDataSource = new SQLServerDataSource();

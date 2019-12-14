@@ -1,22 +1,17 @@
 package Backend;
 
-import java.sql.*;
-import java.util.Properties;
+import UI.MainMenuWindow;
 
-import com.microsoft.sqlserver.jdbc.*;
+import javax.swing.*;
+
 public class App {
     public static void main(String[] args) {
-//        String connectionUrl = "jdbc:sqlserver://192.168.56.1:1337;database=ankushev_kp;integratedSecurity=true";
-//        SQLServerDriver driver = new SQLServerDriver();
-        DBQueries.fillGameTeamsStats();
-//        Properties properties = new Properties();
-/*
-        try {
-            driver.connect(connectionUrl, properties);
-            System.out.println("ok");
-        } catch (SQLServerException e) {
-            e.printStackTrace();
-        }
-*/
+        JFrame cipherWindow = new JFrame("Auth window");
+        cipherWindow.setContentPane(new MainMenuWindow().getMainPanel());
+        cipherWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        cipherWindow.pack();
+        cipherWindow.setSize(400, 300);
+        cipherWindow.setResizable(false);
+        cipherWindow.setVisible(true);
     }
 }
