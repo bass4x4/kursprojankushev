@@ -3,6 +3,7 @@ package Backend;
 import POJO.*;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
+import com.microsoft.sqlserver.jdbc.SQLServerResultSet;
 import com.opencsv.CSVReader;
 
 import java.io.FileNotFoundException;
@@ -475,6 +476,30 @@ public class DBQueries {
         }
         return Collections.EMPTY_LIST;
     }
+
+    public static Query getRandomQuery(String query) {
+        try {
+            ResultSet rs = statement.executeQuery(query);
+            int columnCount = rs.getMetaData().getColumnCount();
+            String[] columnNames = new String[columnCount];
+            List<Object[]> objects = new ArrayList<>();
+            while (rs.next()) {
+                Object[] object = new Object[columnCount];
+                for (int i = 1; i < columnCount + 1; i++) {
+                    object[i - 1] = rs.getObject(i);
+                    columnNames[i - 1] = rs.getMetaData().getColumnName(i);
+                }
+                objects.add(object);
+            }
+            return new Query(columnNames, objects);
+        } catch (SQLServerException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new Query(new String[0], Collections.EMPTY_LIST);
+    }
+
 
 
     private static SQLServerDataSource getSqlServerDataSource() {
