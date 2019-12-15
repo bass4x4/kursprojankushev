@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class App {
     public static void main(String[] args) {
-        JFrame cipherWindow = new JFrame("Auth window");
+        JFrame cipherWindow = new JFrame("Окно запросов");
         cipherWindow.setContentPane(new MainMenuWindow().getMainPanel());
         cipherWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         cipherWindow.pack();

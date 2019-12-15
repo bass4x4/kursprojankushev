@@ -15,18 +15,20 @@ public class MainMenuWindow {
     private JButton gameButton;
     private JPanel mainPanel;
     private JButton randomQueryButton;
+    private JButton preparedQueryButton;
 
     public MainMenuWindow() {
-        gameButton.addActionListener(actionEvent -> createPanelOfType(new GameWindow().getGamePanel(), 600, 400));
-        gamePlaysButton.addActionListener(actionEvent -> createPanelOfType(new GamePlaysWindow().getGamePlaysPanel(), 600, 400));
-        gamePlaysPlayersButton.addActionListener(actionEvent -> createPanelOfType(new GamePlaysPlayersWindow().getGamePlaysPlayersPanel(), 600, 400));
-        gameSkaterButton.addActionListener(actionEvent -> createPanelOfType(new GameSkaterWindow().getGameSkaterPanel(), 600, 400));
-        teamStatsButton.addActionListener(actionEvent -> createPanelOfType(new GameTeamsWindow().getGameTeamsPanel(), 600, 400));
-        teamInfoButton.addActionListener(actionEvent -> createPanelOfType(new TeamInfoWindow().getTeamInfoPanel(), 600, 400));
-        randomQueryButton.addActionListener(actionEvent -> createPanelOfType(new RandomQueryWindow().getRandomQueryPanel(), 600, 400));
+        gameButton.addActionListener(actionEvent -> createPanelOfType(new GameWindow().getGamePanel(), 800, 400));
+        gamePlaysButton.addActionListener(actionEvent -> createPanelOfType(new GamePlaysWindow().getGamePlaysPanel(), 800, 400));
+        gamePlaysPlayersButton.addActionListener(actionEvent -> createPanelOfType(new GamePlaysPlayersWindow().getGamePlaysPlayersPanel(), 800, 400));
+        gameSkaterButton.addActionListener(actionEvent -> createPanelOfType(new GameSkaterWindow().getGameSkaterPanel(), 800, 400));
+        teamStatsButton.addActionListener(actionEvent -> createPanelOfType(new GameTeamsWindow().getGameTeamsPanel(), 800, 400));
+        teamInfoButton.addActionListener(actionEvent -> createPanelOfType(new TeamInfoWindow().getTeamInfoPanel(), 800, 400));
+        randomQueryButton.addActionListener(actionEvent -> createPanelOfType(new RandomQueryWindow().getRandomQueryPanel(), 800, 800));
+        preparedQueryButton.addActionListener(actionEvent -> createPanelOfType(new PreparedQueriesWindow().getPreparedQueriesPanel(), 250, 250));
     }
 
-    private void createPanelOfType(JPanel adminOptionsPanel, int x, int y) {
+    public static void createPanelOfType(JPanel adminOptionsPanel, int x, int y) {
         final JDialog optionWindow = new JDialog(new JFrame("Change password"), true);
         adminOptionsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         optionWindow.setContentPane(adminOptionsPanel);
@@ -56,7 +58,7 @@ public class MainMenuWindow {
      */
     private void $$$setupUI$$$() {
         mainPanel = new JPanel();
-        mainPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(9, 3, new Insets(0, 0, 0, 0), -1, -1));
+        mainPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(10, 3, new Insets(0, 0, 0, 0), -1, -1));
         teamStatsButton = new JButton();
         teamStatsButton.setText("Статистика команд");
         mainPanel.add(teamStatsButton, new com.intellij.uiDesigner.core.GridConstraints(5, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -78,7 +80,7 @@ public class MainMenuWindow {
         final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
         mainPanel.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer2 = new com.intellij.uiDesigner.core.Spacer();
-        mainPanel.add(spacer2, new com.intellij.uiDesigner.core.GridConstraints(8, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        mainPanel.add(spacer2, new com.intellij.uiDesigner.core.GridConstraints(9, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer3 = new com.intellij.uiDesigner.core.Spacer();
         mainPanel.add(spacer3, new com.intellij.uiDesigner.core.GridConstraints(2, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer4 = new com.intellij.uiDesigner.core.Spacer();
@@ -86,6 +88,9 @@ public class MainMenuWindow {
         randomQueryButton = new JButton();
         randomQueryButton.setText("Произвольный запрос");
         mainPanel.add(randomQueryButton, new com.intellij.uiDesigner.core.GridConstraints(7, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        preparedQueryButton = new JButton();
+        preparedQueryButton.setText("Готовые запросы");
+        mainPanel.add(preparedQueryButton, new com.intellij.uiDesigner.core.GridConstraints(8, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

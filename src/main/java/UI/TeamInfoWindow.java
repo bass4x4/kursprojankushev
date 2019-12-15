@@ -1,6 +1,5 @@
 package UI;
 
-import POJO.GamePlaysPlayer;
 import POJO.TeamInfo;
 
 import javax.swing.*;
@@ -8,7 +7,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-import static Backend.DBQueries.getAllGamePlaysPlayers;
 import static Backend.DBQueries.getAllTeamsInfo;
 
 public class TeamInfoWindow {

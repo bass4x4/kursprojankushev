@@ -3,7 +3,6 @@ package Backend;
 import POJO.*;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
-import com.microsoft.sqlserver.jdbc.SQLServerResultSet;
 import com.opencsv.CSVReader;
 
 import java.io.FileNotFoundException;
@@ -55,6 +54,9 @@ public class DBQueries {
 
     private static final String WON = "WON";
     private static final String HEAD_COACH = "HEAD_COACH";
+
+    private static final String NUMBER_OF_GOALS = "NUMBER_OF_GOALS";
+    private static final String NUMBER_OF_TOP_TEAMS = "NUMBER_OF_TOP_TEAMS";
 
     private static final SQLServerDataSource serverDataSource = getSqlServerDataSource();
 
@@ -121,7 +123,9 @@ public class DBQueries {
     private static String selectAllTeams = "SELECT TOP(100) * " +
             "FROM team_info;";
 
+    private static String selectPlayersWithNumberOfGoals = "exec NumberOfGoalsMoreThan ";
 
+    private static String selectTopTeams = "exec TopTeams ";
 
     public static void fillGames() {
         SQLServerDataSource serverDataSource = getSqlServerDataSource();
@@ -475,6 +479,14 @@ public class DBQueries {
             e.printStackTrace();
         }
         return Collections.EMPTY_LIST;
+    }
+
+    public static Query getPlayersWithNumberOfGoals(Integer numberOfGoals) {
+        return getRandomQuery(selectPlayersWithNumberOfGoals + numberOfGoals);
+    }
+
+    public static Query getTopTeams(Integer numberOfTopTeams) {
+        return getRandomQuery(selectTopTeams + numberOfTopTeams);
     }
 
     public static Query getRandomQuery(String query) {

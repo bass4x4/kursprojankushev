@@ -29,7 +29,6 @@ public class RandomQueryWindow {
             for (Object[] s : query.getRows()) {
                 model.addRow(s);
             }
-
         });
     }
 
